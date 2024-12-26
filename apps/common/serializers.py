@@ -75,7 +75,9 @@ class StudentSponsor1Serializer(serializers.ModelSerializer):
     sponsor = serializers.CharField(source='sponsor.full_name', read_only=True)
     class Meta:
         model = StudentSponsor
-        fields = ('id', 'sponsor', 'allocated_amount')
+        fields = ('id', 
+                'sponsor', 
+                'allocated_amount')
 
 class StudentSerializer(serializers.ModelSerializer):
     university = serializers.CharField(source='university.name', read_only=True)
@@ -84,8 +86,14 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ('id', 'full_name', 'phone_number', 'university', 'student_type', 
-                  'contract_amount', 'allocated_amount', 'studentsponsor_set')
+        fields = ('id', 
+                'full_name', 
+                'phone_number', 
+                'university', 
+                'student_type', 
+                'contract_amount', 
+                'allocated_amount', 
+                'studentsponsor_set')
         
     def get_allocated_amount(self, obj):
         total_allocated = StudentSponsor.objects.filter(student=obj).aggregate(
@@ -94,11 +102,13 @@ class StudentSerializer(serializers.ModelSerializer):
         return total_allocated or 0
     
 
-
 class StudentSponsorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentSponsor
-        fields = ('id', 'sponsor', 'allocated_amount')
+        fields = ('id', 
+                'sponsor', 
+                'allocated_amount'
+                )
 
     def update(self, instance, validated_data):
         new_sponsor = validated_data.get('sponsor', instance.sponsor)
